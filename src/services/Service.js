@@ -31,7 +31,7 @@ const comentariosColeccion = db.collection('comentarios');
 const votosColeccion = db.collection('votos');
 
 // imprimimos el nombre del proyecto, esto espor depurar, luego quitar
-console.log(defaultProject.name); // "[DEFAULT]"console.log(defaultProject.name);  // "[DEFAULT]"
+console.log(`Firebase -> ${defaultProject.name} OK`); // "[DEFAULT]"console.log(defaultProject.name);  // "[DEFAULT]"
 
 // Exportamos lo que necesitemos
 export default {
