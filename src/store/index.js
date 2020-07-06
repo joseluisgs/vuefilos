@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 // Servicio Firebase
 import Service from '../services/Service';
+import UsuariosService from '../services/UsuariosService';
 
 Vue.use(Vuex);
 
@@ -20,15 +21,20 @@ const store = new Vuex.Store({
       state.perfil = val;
     },
   },
-  // actions: {
-  //   obtenerPerfilUsuario({ commit, state }) {
-  //     fb.usuariosColeccion.doc(state.usuario.uid).get().then((res) => {
-  //       commit('establecerPerfil', res.data());
-  //     }).catch((error) => {
-  //       console.error(error);
-  //     });
-  //   },
-  // },
+  actions: {
+    obtenerPerfilUsuario({ commit, state }) {
+      try {
+        const res = UsuariosService.getById(state.usuario.uid);
+        commit('establecerPerfil', res.data());
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    cerrarSesion({ commit }) {
+      commit('establecerUsuario', null);
+      commit('establecerPerfil', {});
+    },
+  },
 });
 
 // No perder la sesión si se recarga la página
@@ -37,9 +43,9 @@ const store = new Vuex.Store({
 // Es decir, nos dice en todo momento si esta identificado y ctivo (por ejemplo sus tokens)
 Service.auth.onAuthStateChanged((user) => {
   if (user) {
-    // Almacenamos el usuario
+    // Almacenamos el usuario, mutacion
     store.commit('establecerUsuario', user);
-    // obtenemos el perfil de usuario
+    // obtenemos el perfil de usuario, accion
     store.dispatch('obtenerPerfilUsuario');
   }
 });

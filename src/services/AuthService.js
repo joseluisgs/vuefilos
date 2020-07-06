@@ -20,4 +20,9 @@ export default {
     // provider.addScope('https://www.googleapis.com/auth/plus.login');
     return Auth.signInWithPopup(Service.providerGoogle);
   },
+  // Realiza el logout
+  // https://firebase.google.com/docs/auth/web/password-auth?hl=es_419
+  logout() {
+    return Auth.signOut();
+  },
 };

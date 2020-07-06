@@ -43,10 +43,10 @@
                     type="is-info">
                     Perfil
                   </b-button>
-                   <b-button
+                   <b-button v-if="usuario"
                     outlined
                     type="is-danger"
-                    @click="salir">
+                    @click="cerrarSesion">
                     Logout
                   </b-button>
                   <!-- Otra forma de ponerlos -->
@@ -58,3 +58,18 @@
         </template>
     </b-navbar>
 </template>
+
+<script>
+
+// Vuex
+import { mapState } from 'vuex';
+export default {
+
+}
+</script>
+
+<style scoped>
+    .navbar-item img {
+        max-height: 3rem;
+    }
+</style>

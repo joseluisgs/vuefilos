@@ -63,7 +63,7 @@
 
 <script>
 import AuthService from '@/services/AuthService';
-import { mapActions } from 'vuex';
+import { mapActions, mapMutations } from 'vuex';
 
 export default {
   name: 'Login',
@@ -75,22 +75,33 @@ export default {
   },
   // Mis metodos
   methods: {
-    // Identificacion usuario, email
-    ...mapActions(['establecerUsuario']),
+    // Acciones de Vuex
+    ...mapMutations(['establecerUsuario']),
+    ...mapActions(['obtenerPerfilUsuario']),
     async loginNormal() {
       try {
-        // const res = await AuthService.login(this.user);
         const res = await AuthService.login(this.user);
-        // Lo hacemos de la manera manual, pero también lo podemos hacer mediante un evento (ver main)
-        this.establecerUsuario(res.user); // No es necesario si nos suscribimos al evento en tiempo real de main
+        // Establecemos el usuario
+        this.establecerUsuario(res.user);
+        // Guardamos su perfil
+        this.obtenerPerfilUsuario();
         this.$router.push({ name: 'portada' });
       } catch (error) {
         this.alerta(error);
       }
     },
     // Identificación con Google
-    loginGoogle() {
-      console.log('Login google');
+    async loginGoogle() {
+      try {
+        const res = await AuthService.loginGoogle();
+        // Establecemos el usuario
+        this.establecerUsuario(res.user);
+        // Guardamos su perfil
+        this.obtenerPerfilUsuario();
+        this.$router.push({ name: 'portada' });
+      } catch (error) {
+        this.alerta(error);
+      }
     },
     // alerta
     alerta(mensaje) {
