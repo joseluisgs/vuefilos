@@ -1,6 +1,12 @@
 # Vuefilos
 Gestos de recursos de Vue hecho por Vue, con Bulma y Firebase
 
+[![Vue Ready](https://img.shields.io/badge/Vue.js-%20Ready-%2342b983)](https://es.vuejs.org/)
+[![Bulma/Buefy](https://img.shields.io/badge/Buma/Buefy-%20Ready-blueviolet)](https://buefy.org/)
+[![JS Code](https://img.shields.io/badge/JS%20Code-ES2019-yellow)](https://www.ecma-international.org/ecma-262)
+[![JS Style](https://img.shields.io/badge/JS%20Style-AirBnB-ff69b4)](https://airbnb.io/javascript)
+[![Licence](https://img.shields.io/github/license/joseluisgs/NodeMonRest)](https://github.com/joseluisgs/NodeMonRest/blob/master/LICENSE)
+
 ## Acerca de
 App web de ejemplo con Vuejs, usando Bulma y Firebase
 
