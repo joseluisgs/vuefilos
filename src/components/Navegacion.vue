@@ -1,5 +1,5 @@
 <template>
-  <b-navbar fixed-top="true" type="is-dark">
+  <b-navbar fixed-top="true" type="is-light">
         <template slot="brand">
             <b-navbar-item tag="router-link" :to="{ path: '/' }">
                 <img
@@ -28,12 +28,31 @@
         <template slot="end">
             <b-navbar-item tag="div">
                 <div class="buttons">
-                  <router-link class="button is-primary" to="/registro">
+                  <b-button tag="router-link"
+                    to="/registro"
+                    type="is-primary">
                     <strong>Registro</strong>
-                  </router-link>
-                  <router-link class="button is-light" to="/login">Login</router-link>
+                  </b-button>
+                  <b-button tag="router-link" outlined
+                    to="/login"
+                    type="is-success">
+                    Login
+                  </b-button>
+                  <b-button tag="router-link" outlined
+                    to="/perfil"
+                    type="is-info">
+                    Perfil
+                  </b-button>
+                   <b-button
+                    outlined
+                    type="is-danger"
+                    @click="salir">
+                    Logout
+                  </b-button>
+                  <!-- Otra forma de ponerlos -->
+                  <!-- <router-link class="button is-light" to="/login">Login</router-link>
                   <router-link class="button is-light" to="/perfil">Perfil</router-link>
-                  <a class="button is-light" href="#">Logout</a>
+                  <a class="button is-light" href="#">Logout</a> -->
                 </div>
             </b-navbar-item>
         </template>
