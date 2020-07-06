@@ -13,21 +13,22 @@ const store = new Vuex.Store({
   },
   // Las unicas que tocan en estado
   mutations: {
-    // Establece el usuario
     establecerUsuario(state, val) {
-
+      state.usuario = val;
     },
-    // Establece el perfil
     establecerPerfil(state, val) {
-
+      state.perfil = val;
     },
   },
-  // Son funciones asíncronas, que al final puden lanzar una mutacion
-  actions: {
-    obtenerPerfilUsuario({ commit, state }) {
-
-    },
-  },
+  // actions: {
+  //   obtenerPerfilUsuario({ commit, state }) {
+  //     fb.usuariosColeccion.doc(state.usuario.uid).get().then((res) => {
+  //       commit('establecerPerfil', res.data());
+  //     }).catch((error) => {
+  //       console.error(error);
+  //     });
+  //   },
+  // },
 });
 
 // No perder la sesión si se recarga la página
