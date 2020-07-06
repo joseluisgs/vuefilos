@@ -4,6 +4,9 @@ Gestos de recursos de Vue hecho por Vue, con Bulma y Firebase
 ## Acerca de
 App web de ejemplo con Vuejs, usando Bulma y Firebase
 
+### Librerías
+Para el uso de Bulma podemos usar la librería por defecto o Buefy
+
 ## Project setup
 ```
 npm install

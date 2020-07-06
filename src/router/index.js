@@ -1,22 +1,42 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import Home from '../views/Home.vue';
+import Portada from '@/views/Portada.vue';
+import Perfil from '@/views/Perfil.vue';
+import Login from '@/views/Login.vue';
+import Registro from '@/views/Registro.vue';
+import Recuperar from '@/views/Recuperar.vue';
 
 Vue.use(VueRouter);
 
 const routes = [
   {
     path: '/',
-    name: 'Home',
-    component: Home,
+    name: 'portada',
+    component: Portada,
   },
   {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue'),
+    path: '/perfil',
+    name: 'perfl',
+    component: Perfil,
+    // // route level code-splitting
+    // // this generates a separate chunk (about.[hash].js) for this route
+    // // which is lazy-loaded when the route is visited.
+    // component: () => import(/* webpackChunkName: "about" */ '../views/About.vue'),
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: Login,
+  },
+  {
+    path: '/registro',
+    name: 'registro',
+    component: Registro,
+  },
+  {
+    path: '/recuperar',
+    name: 'recuperar',
+    component: Recuperar,
   },
 ];
 
