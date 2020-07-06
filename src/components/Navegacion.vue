@@ -28,17 +28,25 @@
         <template slot="end">
             <b-navbar-item tag="div">
                 <div class="buttons">
-                  <b-button tag="router-link"
+                  <b-button
+                    v-if="!usuario"
+                    tag="router-link"
                     to="/registro"
                     type="is-primary">
                     <strong>Registro</strong>
                   </b-button>
-                  <b-button tag="router-link" outlined
+                  <b-button
+                    v-if="!usuario"
+                    tag="router-link"
+                    outlined
                     to="/login"
                     type="is-success">
                     Login
                   </b-button>
-                  <b-button tag="router-link" outlined
+                  <b-button
+                     v-if="usuario"
+                    tag="router-link"
+                    outlined
                     to="/perfil"
                     type="is-info">
                     Perfil
@@ -60,12 +68,36 @@
 </template>
 
 <script>
-
+import AuthService from '@/services/AuthService';
 // Vuex
-import { mapState } from 'vuex';
-export default {
+import { mapState, mapActions } from 'vuex';
 
-}
+export default {
+  name: 'Navegacion',
+  // Mis metodos
+  methods: {
+    ...mapActions(['limpiarUsuario']),
+    async cerrarSesion() {
+      // Por si hay que hacer algo en el servidor.
+      try {
+        await AuthService.logout();
+        // enviar a la portada (si no estámos ahí)
+        if (this.$route.fullPath !== '/') {
+          this.$router.push('/');
+        }
+        // Limpiamos los datos de nuestro estado
+        this.limpiarUsuario();
+      } catch (error) {
+        console.log(error);
+      }
+    },
+  },
+  // Metodos computados
+  computed: {
+    ...mapState(['usuario']),
+  },
+
+};
 </script>
 
 <style scoped>
