@@ -14,7 +14,8 @@ Vue.use(Buefy);
 // require('./assets/main.scss'); // Pos i cambiamos el estilo de Bulma
 
 Vue.config.productionTip = false;
-Vue.config.devtools = true;
+// Vue.config.devtools = true;
+// Vue.config.devtools = process.env.NODE_ENV === 'development';
 
 let app;
 

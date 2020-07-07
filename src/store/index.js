@@ -5,7 +5,6 @@ import Service from '../services/Service';
 import UsuariosService from '../services/UsuariosService';
 
 Vue.use(Vuex);
-
 const store = new Vuex.Store({
   // Datos del estado
   state: {
