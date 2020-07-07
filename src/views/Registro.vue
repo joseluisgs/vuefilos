@@ -90,24 +90,20 @@ export default {
       try {
         // registramos, res tiene ya el objeto user
         const res = await AuthService.register(this.usuario.email, this.usuario.password);
-        if (res) {
-          // Establecemos el usuario
-          this.establecerUsuario(res);
-          // creamos el peerfil de usuarios
-          const perfil = {
-            nombre: this.usuario.nombre,
-            apellidos: this.usuario.apellidos,
-            registro: new Date(),
-          };
+        // Establecemos el usuario
+        this.establecerUsuario(res);
+        // creamos el peerfil de usuarios
+        const perfil = {
+          nombre: this.usuario.nombre,
+          apellidos: this.usuario.apellidos,
+          registro: new Date(),
+        };
           // Insertamos en la base de datos
-          UsuariosSrvice.post(res.uid, perfil);
-          // Obtenemos su perfil
-          this.obtenerPerfilUsuario();
-          // A portada
-          this.$router.push({ name: 'portada' });
-        } else {
-          this.alerta('Error al registrar usuario');
-        }
+        UsuariosSrvice.post(res.uid, perfil);
+        // Obtenemos su perfil
+        this.obtenerPerfilUsuario();
+        // A portada
+        this.$router.push({ name: 'portada' });
       } catch (error) {
         this.alerta(error);
       }
