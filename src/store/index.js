@@ -21,10 +21,10 @@ const store = new Vuex.Store({
     },
   },
   actions: {
-    obtenerPerfilUsuario({ commit, state }) {
+    async obtenerPerfilUsuario({ commit, state }) {
       try {
-        const res = UsuariosService.getById(state.usuario.uid);
-        commit('establecerPerfil', res.data());
+        const res = await UsuariosService.getById(state.usuario.uid);
+        commit('establecerPerfil', res);
       } catch (error) {
         console.error(error);
       }

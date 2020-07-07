@@ -82,15 +82,11 @@ export default {
       try {
         const res = await AuthService.login(this.user.email, this.user.password);
         // Establecemos el usuario
-        if (res) {
-          this.establecerUsuario(res);
-          // Obtenemos su perfil
-          this.obtenerPerfilUsuario();
-          // A portada
-          this.$router.push({ name: 'portada' });
-        } else {
-          this.alerta('Datos de usuario incorrectos o no se ha registrado todavía');
-        }
+        this.establecerUsuario(res);
+        // Obtenemos su perfil
+        this.obtenerPerfilUsuario();
+        // A portada
+        this.$router.push({ name: 'portada' });
       } catch (error) {
         this.alerta(error);
       }
