@@ -7,4 +7,11 @@ export default {
     const user = await Service.usuariosColeccion.doc(uid).get();
     return user;
   },
+  // Crea uno nuevo
+  // https://firebase.google.com/docs/firestore/manage-data/add-data?hl=es-419#web
+  async post(uid, data) {
+    const res = await Service.usuariosColeccion.doc(uid).set(data);
+    return res.user;
+  },
+
 };

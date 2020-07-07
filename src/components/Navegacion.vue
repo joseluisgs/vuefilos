@@ -31,7 +31,7 @@
                   <b-button
                     v-if="!usuario"
                     tag="router-link"
-                    to="/registro"
+                    :to="{ name: 'registro' }"
                     type="is-primary">
                     <strong>Registro</strong>
                   </b-button>
@@ -39,15 +39,15 @@
                     v-if="!usuario"
                     tag="router-link"
                     outlined
-                    to="/login"
+                    :to="{ name: 'login' }"
                     type="is-success">
                     Login
                   </b-button>
                   <b-button
-                     v-if="usuario"
+                    v-if="usuario"
                     tag="router-link"
                     outlined
-                    to="/perfil"
+                    :to="{ name: 'perfil' }"
                     type="is-info">
                     Perfil
                   </b-button>

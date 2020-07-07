@@ -18,7 +18,7 @@ const routes = [
   },
   {
     path: '/perfil',
-    name: 'perfl',
+    name: 'perfil',
     component: Perfil,
     meta: { autorizacion: true },
   },
@@ -64,10 +64,10 @@ router.beforeEach((to, from, next) => {
 
   if (autorizacion && !usuarioActivo) { // Req auth. y no está registrado
     console.log('Req auth. y no está registrado');
-    next('/login'); // Vamos a login
+    next({ name: 'login' }); // Vamos a login
   } else if (publico && usuarioActivo) { // No req. auth y está registrado
     console.log('No req. auth y está registrado');
-    next('/'); // Vamos a portada
+    next({ name: 'portada' }); // Vamos a portada
   } else if (autorizacion && usuarioActivo) { // Req. auth y está registrado
     console.log('Req. auth y está registrado');
     next(); // Lo dejamos pasar a donde toque
