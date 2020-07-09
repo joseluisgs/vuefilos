@@ -33,4 +33,9 @@ export default {
     const res = await Auth.createUserWithEmailAndPassword(email, password);
     return res.user;
   },
+  // Recupera al password dado un email
+  // https://firebase.google.com/docs/reference/js/firebase.auth.Auth#sendpasswordresetemail
+  async reset(email) {
+    return Auth.sendPasswordResetEmail(email);
+  },
 };
