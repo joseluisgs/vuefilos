@@ -51,9 +51,10 @@ export default {
         // Hacemos el reset
         AuthService.reset(this.email);
         this.email = '';
+        this.alerta('Operación realizada correctamente, chequea tu correo.', 'is-success');
         this.redirigir();
       } catch (error) {
-        this.alerta(error);
+        this.alerta(error, 'is-danger');
       } finally {
         this.trabajando = false;
       }
@@ -66,10 +67,10 @@ export default {
       }, 2000);
     },
     // alerta
-    alerta(mensaje) {
+    alerta(mensaje, tipo) {
       this.$buefy.notification.open({
         message: `${mensaje}`,
-        type: 'is-danger',
+        type: `${tipo}`,
       });
     },
   },
