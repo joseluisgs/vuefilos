@@ -8,5 +8,8 @@ export default {
     const res = await Service.recursosColeccion.add(data);
     return res;
   },
-
+  // Elimina un recurso
+  async delete(id) {
+    return Service.recursosColeccion.doc(id).delete();
+  },
 };

@@ -8,51 +8,13 @@
       <div class="columns" id="portada">
         <!-- Esta columna ocupa la mitad, si no usa flex -->
         <div class="column is-half-tablet">
-          <!-- Una caja que contiene cun elemtno -->
-          <div class="box">
-            <article class="media">
-              <div class="media-content">
-                <div class="content">
-                  <button class="delete is-small is-pulled-right" aria-label="delete"></button>
-                  <p>
-                    <strong>Título</strong>
-                    <br />Descripción...
-                    <br />
-                    <small>Usuario</small>
-                    <small>
-                      <i>(Hace un momento...)</i>
-                    </small>
-                  </p>
-                </div>
-                <nav class="level is-pulled-left">
-                  <div class="level-left">
-                    <a class="level-item" aria-label="reply">
-                       <b-button type="is-link is-small" outlined
-                        tag="a"
-                        href="https://buefy.org"
-                        target="_blank">
-                        Visitar
-                       </b-button>
-                    </a>
-                    <a class="level-item" aria-label="reply">
-                      <b-button type="is-info is-small" outlined
-                        tag="a"
-                        href="https://buefy.org"
-                        target="_blank">
-                        Más info.
-                       </b-button>
-                    </a>
-                  </div>
-                </nav>
-                <nav class="level is-pulled-right">
-                  <div class="level-right">
-                    <a href="#" class="level-item" aria-label="reply">3 comentario/s</a>
-                    <a href="#" class="level-item" aria-label="like">2 voto/s</a>
-                  </div>
-                </nav>
-              </div>
-            </article>
-          </div>
+          <!-- Stream de recursos -->
+          <RecursoPreview
+            :key="recurso.id"
+            @eliminarRecurso="eliminarRecurso"
+            v-for="recurso in recursos"
+            :recurso="recurso"
+          ></RecursoPreview>
         </div>
         <!-- Agregar recurso -->
         <div class="column is-offset-1">
@@ -66,7 +28,12 @@
                 <b-input v-model.trim="recurso.url" required></b-input>
               </b-field>
               <b-field label="Descripción del recurso:">
-                <b-input v-model.trim="recurso.descripcion" maxlength="250" type="textarea" required></b-input>
+                <b-input
+                  v-model.trim="recurso.descripcion"
+                  maxlength="250"
+                  type="textarea"
+                  required
+                ></b-input>
               </b-field>
               <div v-if="usuario" class="field is-grouped">
                 <div class="control">
@@ -79,7 +46,8 @@
                 </div>
               </div>
               <p v-else>
-                Para añadir recursos debes <router-link :to="{ name: 'login' }">autentificarte</router-link> en Vuefilos.
+                Para añadir recursos debes
+                <router-link :to="{ name: 'login' }">autentificarte</router-link>en Vuefilos.
               </p>
             </form>
           </section>
@@ -92,9 +60,13 @@
 <script>
 import { mapState } from 'vuex';
 import RecursosService from '@/services/RecursosService';
+import RecursoPreview from '@/components/RecursoPreview.vue';
 
 export default {
   name: 'Portada',
+  components: {
+    RecursoPreview,
+  },
   data() {
     return {
       recurso: {},
@@ -127,6 +99,15 @@ export default {
         this.limpiar();
       }
     },
+    // Eliminamos el recurso
+    async eliminarRecurso(id) {
+      try {
+        await RecursosService.delete(id);
+        this.alerta('Recurso eliminado con éxito', 'is-success');
+      } catch (error) {
+        this.alerta(error, 'is-danger');
+      }
+    },
     // alerta
     alerta(mensaje, tipo) {
       this.$buefy.notification.open({
@@ -141,7 +122,7 @@ export default {
   // Metodos computados
   computed: {
     // Nos traemos el estado de Vuex
-    ...mapState(['usuario', 'perfil']),
+    ...mapState(['usuario', 'perfil', 'recursos']),
   },
 };
 </script>

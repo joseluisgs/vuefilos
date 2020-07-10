@@ -10,6 +10,7 @@ const store = new Vuex.Store({
   state: {
     usuario: null,
     perfil: {},
+    recursos: [],
   },
   // Las unicas que tocan en estado
   mutations: {
@@ -18,6 +19,9 @@ const store = new Vuex.Store({
     },
     establecerPerfil(state, val) {
       state.perfil = val;
+    },
+    establecerRecursos(state, val) {
+      state.recursos = val;
     },
   },
   actions: {
@@ -47,6 +51,18 @@ Service.auth.onAuthStateChanged((user) => {
     // obtenemos el perfil de usuario, accion
     store.dispatch('obtenerPerfilUsuario');
   }
+  // Obtiene el listado en Tiempo Real
+  // Podemos poner un where y filtrar por el usuarioa ctual
+  // https://firebase.google.com/docs/firestore/query-data/listen
+  Service.recursosColeccion.orderBy('cuando', 'desc').onSnapshot((querySnapshot) => {
+    const recursos = [];
+    querySnapshot.forEach((doc) => {
+      const recurso = doc.data();
+      recurso.id = doc.id;
+      recursos.push(recurso);
+    });
+    store.commit('establecerRecursos', recursos);
+  });
 });
 
 export default store;
