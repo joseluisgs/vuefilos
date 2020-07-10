@@ -82,6 +82,6 @@ export default {
 
 <style scoped>
   .propio {
-    background-color: #eee;
+    background-color: rgb(243, 243, 243);
   }
 </style>
