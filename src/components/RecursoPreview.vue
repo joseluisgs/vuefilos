@@ -70,7 +70,7 @@ export default {
   filters: {
     // Nos quedamos con los 120 caracteres
     extracto(valor) {
-      return (valor.length < 120) ? valor : `${valor.substring(0, 120)}...`;
+      return (valor.length <= 120) ? valor : `${valor.substring(0, 120)}...`;
     },
     // Sacamos cuanto hace
     fechaHace(valor) {
@@ -82,6 +82,6 @@ export default {
 
 <style scoped>
   .propio {
-    background-color: rgb(243, 243, 243);
+    background-color: whitesmoke;
   }
 </style>

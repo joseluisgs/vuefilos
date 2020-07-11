@@ -15,6 +15,7 @@
             v-for="recurso in recursos"
             :recurso="recurso"
           ></RecursoPreview>
+          <h1 class="has-text-centered" v-show="!recursos.length">No existen recursos, agrega el primero.</h1>
         </div>
         <!-- Agregar recurso -->
         <div class="column is-offset-1">
@@ -47,7 +48,7 @@
               </div>
               <p v-else>
                 Para añadir recursos debes
-                <router-link :to="{ name: 'login' }">autentificarte</router-link>en Vuefilos.
+                <router-link :to="{ name: 'login' }">autentificarte</router-link> en Vuefilos.
               </p>
             </form>
           </section>

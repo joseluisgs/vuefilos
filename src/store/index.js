@@ -11,6 +11,7 @@ const store = new Vuex.Store({
     usuario: null,
     perfil: {},
     recursos: [],
+    otrosRecursos: [],
   },
   // Las unicas que tocan en estado
   mutations: {
@@ -22,6 +23,9 @@ const store = new Vuex.Store({
     },
     establecerRecursos(state, val) {
       state.recursos = val;
+    },
+    establecerOtros(state, val) {
+      state.otrosRecursos.unshift(val);
     },
   },
   actions: {
@@ -55,13 +59,37 @@ Service.auth.onAuthStateChanged((user) => {
   // Podemos poner un where y filtrar por el usuarioa ctual
   // https://firebase.google.com/docs/firestore/query-data/listen
   Service.recursosColeccion.orderBy('cuando', 'desc').onSnapshot((querySnapshot) => {
-    const recursos = [];
-    querySnapshot.forEach((doc) => {
-      const recurso = doc.data();
-      recurso.id = doc.id;
-      recursos.push(recurso);
-    });
-    store.commit('establecerRecursos', recursos);
+    let propio = false;
+
+    // hay alguien conectado y novedades en el stream de recursos
+    if (store.state.usuario && querySnapshot.docs.length) {
+      // Si corresponde el usuario actual co el user id del documento
+      propio = (store.state.usuario.uid === querySnapshot.docChanges()[0].doc.data().userId);
+    }
+
+    // Hay nuevos recuros y son de otros usuarios
+    // Hay diferencias yhan sido añadido y no son propios
+    if (querySnapshot.docChanges().length !== querySnapshot.docs.length
+      // eslint-disable-next-line eqeqeq
+      && querySnapshot.docChanges()[0].type == 'added' && !propio) {
+      // eslint-disable-next-line prefer-const
+      let recurso = querySnapshot.docChanges()[0].doc.data();
+      recurso.id = querySnapshot.docChanges()[0].doc.id;
+
+      // Evitamos duplicados
+      if (!store.state.otrosRecursos.some((otro) => otro.id === recurso.id)) {
+        store.commit('establecerOtros', recurso);
+      }
+    } else {
+      // Son nuestros recursos
+      const recursos = [];
+      querySnapshot.forEach((doc) => {
+        const recurso = doc.data();
+        recurso.id = doc.id;
+        recursos.push(recurso);
+      });
+      store.commit('establecerRecursos', recursos);
+    }
   });
 });
 
