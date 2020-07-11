@@ -81,7 +81,11 @@ export default {
 </script>
 
 <style scoped>
-  .propio {
-    background-color: whitesmoke;
-  }
+    .level.is-pulled-left {
+        margin-bottom: 0;
+    }
+
+    .propio {
+        background-color: whitesmoke;
+    }
 </style>

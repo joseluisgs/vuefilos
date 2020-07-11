@@ -8,6 +8,15 @@
       <div class="columns" id="portada">
         <!-- Esta columna ocupa la mitad, si no usa flex -->
         <div class="column is-half-tablet">
+          <!-- Nos muestra un aviso de si hay nuevos recursos de otros -->
+          <transition name="fade">
+            <div @click="mostrarOtros" v-if="otrosRecursos.length" class="notification is-info" id="aviso-nuevos">
+              <p>
+                Se han agregado <strong>{{ otrosRecursos.length }} nuevo/s recurso/s</strong>.<br>
+                <a>Haz click aquí para verlos</a>.
+              </p>
+            </div>
+          </transition>
           <!-- Stream de recursos -->
           <RecursoPreview
             :key="recurso.id"
@@ -59,7 +68,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapMutations } from 'vuex';
 import RecursosService from '@/services/RecursosService';
 import RecursoPreview from '@/components/RecursoPreview.vue';
 
@@ -75,6 +84,8 @@ export default {
     };
   },
   methods: {
+    // Acciones de Vuex
+    ...mapMutations(['establecerRecursos', 'limpiarOtros']),
     // agregar un recursos
     async agregarRecurso() {
       this.trabajando = true;
@@ -116,23 +127,44 @@ export default {
         type: `${tipo}`,
       });
     },
+    // Limpia los datos
     limpiar() {
       this.recurso = {};
+    },
+    // Mostrat otros
+    mostrarOtros() {
+      this.establecerRecursos(this.otrosRecursos.concat(this.recursos));
+      this.limpiarOtros();
     },
   },
   // Metodos computados
   computed: {
     // Nos traemos el estado de Vuex
-    ...mapState(['usuario', 'perfil', 'recursos']),
+    ...mapState(['usuario', 'perfil', 'recursos', 'otrosRecursos']),
   },
 };
 </script>
 
 <style scoped>
-@media screen and (max-width: 768px) {
-  #portada {
-    display: flex;
-    flex-direction: column-reverse;
-  }
-}
+    #aviso-nuevos {
+        animation: salto 0.5s;
+        animation-direction: alternate;
+        animation-iteration-count: infinite;
+    }
+
+    .top a {
+        color: inherit;
+    }
+
+    @keyframes salto {
+        from { transform: translateY(0); }
+        to   { transform: translateY(10px); }
+    }
+
+    @media screen and (max-width: 768px) {
+        #portada {
+            display: flex;
+            flex-direction: column-reverse;
+        }
+    }
 </style>
