@@ -31,9 +31,7 @@
               <b-button
                 type="is-info is-small"
                 outlined
-                tag="a"
-                href="https://buefy.org"
-                target="_blank"
+                @click="$emit('visualizarRecurso', true, recurso.id)"
               >Más info.</b-button>
             </a>
           </div>

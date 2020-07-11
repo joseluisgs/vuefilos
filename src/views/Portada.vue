@@ -1,5 +1,7 @@
 <template>
   <section class="section">
+    <!-- Mostramos el recurso seleccionado -->
+    <Recurso @visualizarRecurso="visualizarRecurso" v-if="recursoVisible" :id="recursoId"></Recurso>
     <div class="container">
       <h1 class="title has-text-centered">Los mejores recursos para dominar Vue.js</h1>
       <hr />
@@ -20,6 +22,7 @@
           <!-- Stream de recursos -->
           <RecursoPreview
             :key="recurso.id"
+            @visualizarRecurso="visualizarRecurso"
             @eliminarRecurso="eliminarRecurso"
             v-for="recurso in recursos"
             :recurso="recurso"
@@ -71,16 +74,20 @@
 import { mapState, mapMutations } from 'vuex';
 import RecursosService from '@/services/RecursosService';
 import RecursoPreview from '@/components/RecursoPreview.vue';
+import Recurso from '@/components/Recurso.vue';
 
 export default {
   name: 'Portada',
   components: {
     RecursoPreview,
+    Recurso,
   },
   data() {
     return {
       recurso: {},
       trabajando: false,
+      recursoId: null,
+      recursoVisible: false,
     };
   },
   methods: {
@@ -135,6 +142,13 @@ export default {
     mostrarOtros() {
       this.establecerRecursos(this.otrosRecursos.concat(this.recursos));
       this.limpiarOtros();
+    },
+    // Visualizar un recurso
+    visualizarRecurso(estado, id) {
+      if (id) {
+        this.recursoId = id;
+      }
+      this.recursoVisible = estado;
     },
   },
   // Metodos computados
