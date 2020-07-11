@@ -6,47 +6,25 @@
           <h1 class="title">Login</h1>
           <hr />
           <form @submit.prevent="loginNormal">
-              <p class="control has-icons-left has-icons-right">
-                <b-field>
-                  <b-input
-                    placeholder="Correo Electrónico"
-                    v-model.trim="user.email"
-                    required
-                    type="email"
-                    icon="email">
-                  </b-input>
-                </b-field>
-                  <span class="icon is-small is-left">
-                  <i class="fa fa-envelope-o"></i>
-                </span>
-                </p>
-                <p class="control has-icons-left has-icons-right">
-                <b-field>
-                  <b-input
-                    placeholder="Contraseña"
-                    v-model.trim="user.password"
-                    required
-                    type="password"
-                    icon="email">
-                  </b-input>
-                </b-field>
-                <span class="icon is-small is-left">
-                  <i class="fa fa-unlock-alt"></i>
-                </span>
-              </p>
-              <div class="buttons">
-                <b-button
-                    tag="input"
-                    type="is-info"
-                    native-type="submit"
-                    value="Login"
-                  />
-               <b-button
-                type="is-danger"
-                @click="loginGoogle"
-                outlined>
-                Google
-              </b-button>
+            <p class="control has-icons-left has-icons-right">
+              <b-field>
+                <b-input placeholder="Correo Electrónico" v-model.trim="user.email" required type="email" icon="email"></b-input>
+              </b-field>
+              <span class="icon is-small is-left">
+                <i class="fa fa-envelope-o"></i>
+              </span>
+            </p>
+            <p class="control has-icons-left has-icons-right">
+              <b-field>
+                <b-input placeholder="Contraseña" v-model.trim="user.password" required type="password" icon="email"></b-input>
+              </b-field>
+              <span class="icon is-small is-left">
+                <i class="fa fa-unlock-alt"></i>
+              </span>
+            </p>
+            <div class="buttons">
+              <b-button tag="input" type="is-info" native-type="submit" value="Login" />
+              <b-button type="is-danger" @click="loginGoogle" outlined>Google</b-button>
             </div>
           </form>
           <hr />

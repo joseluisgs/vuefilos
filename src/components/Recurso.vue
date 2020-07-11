@@ -15,7 +15,7 @@
           <small>
             <i>({{ recurso.cuando | fechaHace }})</i>
           </small>
-          <br>
+          <br />
           <a :href="recurso.url" target="_blank">Visitar</a>
         </p>
         <hr />
@@ -24,23 +24,25 @@
         <h2 class="subtitle">Comentarios</h2>
         <form>
           <b-field>
-            <b-input maxlength="250"
-              type="textarea"
-              placeholder="Comentarios"
-              required></b-input>
-        </b-field>
+            <b-input maxlength="250" type="textarea" placeholder="Comentarios" required></b-input>
+          </b-field>
           <div class="control">
-            <b-button
-              tag="input"
-              type="is-info"
-              native-type="submit"
-              value="Comentar"
-            />
+            <b-button tag="input" type="is-info" native-type="submit" value="Comentar" />
           </div>
         </form>
       </section>
       <footer class="modal-card-foot">
-        <b-button type="is-primary">Votar</b-button>
+        <!-- Si no estamos registrados -->
+        <span v-if="!usuario">
+          <router-link :to="{name:'registro'}">Regístrate</router-link> para poder votar.
+        </span>
+        <!-- Si ya hemos votado -->
+        <span v-else-if="votado">Voto registrado.</span>
+        <!-- Si no votamos -->
+        <b-button v-else
+          type="is-primary"
+          @click="votar"
+        >Votar recurso</b-button>
       </footer>
     </div>
   </div>
@@ -49,25 +51,72 @@
 <script>
 import { mapState } from 'vuex';
 import moment from 'moment';
+import VotosService from '@/services/VotosService';
+import RecursosService from '@/services/RecursosService';
 
 export default {
   name: 'Recurso',
-  created() {
+  async created() {
     // Buscamos el recurso y obtenemos sus datos
     this.indice = this.recursos.findIndex((recurso) => recurso.id === this.id);
     this.recurso = this.recursos[this.indice];
+    // Vamos a ver si ya ha votado
+    if (this.usuario) {
+      const votoId = `${this.usuario.uid}_${this.recurso.id}`;
+      const res = await VotosService.get(votoId);
+      // Si existe somos false
+      if (!res.exists) {
+        this.votado = false;
+      }
+    }
   },
   data() {
     return {
       indice: null,
       recurso: {},
+      votado: true,
     };
   },
   // La propiedad que le pasamos
   props: ['id'],
+  // variables de vuex
   computed: {
     ...mapState(['usuario', 'recursos', 'perfil']),
   },
+  // Métodos
+  methods: {
+    // Vamos a votar
+    votar() {
+      // Creo el id del voto
+      const votoId = `${this.usuario.uid}_${this.recurso.id}`;
+      const votoData = {
+        recursoId: this.recurso.id,
+        usuarioId: this.usuario.uid,
+      };
+      try {
+        // Contamos los votos...Primero la asociacion usuario recurso
+        VotosService.post(votoId, votoData);
+        // Aumentamos los votos
+        const recursoData = {
+          votos: this.recurso.votos + 1,
+        };
+        // Actualizamos el recurso y sus votos
+        RecursosService.put(this.recurso.id, recursoData);
+        this.votado = true;
+        this.alerta('Voto computado', 'is-success');
+      } catch (error) {
+        this.alerta(error, 'is-danger');
+      }
+    },
+    // alerta
+    alerta(mensaje, tipo) {
+      this.$buefy.notification.open({
+        message: `${mensaje}`,
+        type: `${tipo}`,
+      });
+    },
+  },
+  // Filtros
   filters: {
     fechaHace(valor) {
       return moment(valor.toDate()).fromNow();

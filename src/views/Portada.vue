@@ -14,19 +14,16 @@
           <transition name="fade">
             <div @click="mostrarOtros" v-if="otrosRecursos.length" class="notification is-info" id="aviso-nuevos">
               <p>
-                Se han agregado <strong>{{ otrosRecursos.length }} nuevo/s recurso/s</strong>.<br>
+                Se han agregado
+                <strong>{{ otrosRecursos.length }} nuevo/s recurso/s</strong>.
+                <br />
                 <a>Haz click aquí para verlos</a>.
               </p>
             </div>
           </transition>
           <!-- Stream de recursos -->
-          <RecursoPreview
-            :key="recurso.id"
-            @visualizarRecurso="visualizarRecurso"
-            @eliminarRecurso="eliminarRecurso"
-            v-for="recurso in recursos"
-            :recurso="recurso"
-          ></RecursoPreview>
+          <RecursoPreview :key="recurso.id" @visualizarRecurso="visualizarRecurso" @eliminarRecurso="eliminarRecurso"
+            v-for="recurso in recursos" :recurso="recurso"></RecursoPreview>
           <h1 class="has-text-centered" v-show="!recursos.length">No existen recursos, agrega el primero.</h1>
         </div>
         <!-- Agregar recurso -->
@@ -41,26 +38,16 @@
                 <b-input v-model.trim="recurso.url" required></b-input>
               </b-field>
               <b-field label="Descripción del recurso:">
-                <b-input
-                  v-model.trim="recurso.descripcion"
-                  maxlength="250"
-                  type="textarea"
-                  required
-                ></b-input>
+                <b-input v-model.trim="recurso.descripcion" maxlength="250" type="textarea" required></b-input>
               </b-field>
               <div v-if="usuario" class="field is-grouped">
                 <div class="control">
-                  <b-button
-                    tag="input"
-                    type="is-link"
-                    native-type="submit"
-                    value="Agregar recurso"
-                  />
+                  <b-button tag="input" type="is-link" native-type="submit" value="Agregar recurso" />
                 </div>
               </div>
               <p v-else>
                 Para añadir recursos debes
-                <router-link :to="{ name: 'login' }">autentificarte</router-link> en Vuefilos.
+                <router-link :to="{ name: 'login' }">autentificarte</router-link>en Vuefilos.
               </p>
             </form>
           </section>
@@ -160,25 +147,29 @@ export default {
 </script>
 
 <style scoped>
-    #aviso-nuevos {
-        animation: salto 0.5s;
-        animation-direction: alternate;
-        animation-iteration-count: infinite;
-    }
+#aviso-nuevos {
+  animation: salto 0.5s;
+  animation-direction: alternate;
+  animation-iteration-count: infinite;
+}
 
-    .top a {
-        color: inherit;
-    }
+.top a {
+  color: inherit;
+}
 
-    @keyframes salto {
-        from { transform: translateY(0); }
-        to   { transform: translateY(10px); }
-    }
+@keyframes salto {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(10px);
+  }
+}
 
-    @media screen and (max-width: 768px) {
-        #portada {
-            display: flex;
-            flex-direction: column-reverse;
-        }
-    }
+@media screen and (max-width: 768px) {
+  #portada {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+}
 </style>
