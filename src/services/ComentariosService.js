@@ -12,5 +12,13 @@ export default {
     const res = await Service.comentariosColeccion.add(data);
     return res;
   },
+  // Obtiene los comentarios de un usuario
+  async getByUser(uid) {
+    return Service.comentariosColeccion.where('usuarioId', '==', uid).get();
+  },
+  // Actualiza un comentario
+  async put(id, data) {
+    return Service.comentariosColeccion.doc(id).update(data);
+  },
 
 };

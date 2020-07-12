@@ -13,5 +13,16 @@ export default {
     const res = await Service.usuariosColeccion.doc(uid).set(data);
     return res.user;
   },
-
+  // Actualiza un usuario
+  async put(uid, data) {
+    return Service.usuariosColeccion.doc(uid).update(data);
+  },
+  // Actualiza el email
+  async updateEmail(email) {
+    return Service.auth.currentUser.updateEmail(email);
+  },
+  // Actualiza el password
+  async updatePassword(password) {
+    return Service.auth.currentUser.updatePassword(password);
+  },
 };

@@ -71,7 +71,7 @@
 
 <script>
 import AuthService from '@/services/AuthService';
-import UsuariosSrvice from '@/services/UsuariosService';
+import UsuariosService from '@/services/UsuariosService';
 import { mapActions, mapMutations } from 'vuex';
 
 export default {
@@ -99,7 +99,7 @@ export default {
           registro: new Date(),
         };
           // Insertamos en la base de datos
-        UsuariosSrvice.post(res.uid, perfil);
+        UsuariosService.post(res.uid, perfil);
         // Obtenemos su perfil
         this.obtenerPerfilUsuario();
         // A portada

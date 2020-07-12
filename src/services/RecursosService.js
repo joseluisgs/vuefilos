@@ -20,4 +20,8 @@ export default {
   async put(id, data) {
     return Service.recursosColeccion.doc(id).update(data);
   },
+  // Obtiene los recursos de un usuario
+  async getByUser(uid) {
+    return Service.recursosColeccion.where('userId', '==', uid).get();
+  },
 };
