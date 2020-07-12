@@ -22,12 +22,24 @@
 
         <!-- Comentarios -->
         <h2 class="subtitle">Comentarios</h2>
-        <form>
+        <form @submit.prevent="comentar">
           <b-field>
-            <b-input maxlength="250" type="textarea" placeholder="Comentarios" required></b-input>
+            <b-input v-model.trim="comentario"
+              maxlength="250" type="textarea"
+              placeholder="Comentarios" required>
+            </b-input>
           </b-field>
           <div class="control">
-            <b-button tag="input" type="is-info" native-type="submit" value="Comentar" />
+            <b-button
+              v-if="usuario"
+              :disabled="!comentario.length"
+              tag="input" type="is-info"
+              native-type="submit"
+              value="Comentar"
+            >Comentar</b-button>
+            <span v-else>
+              Para comentar debes estar <router-link :to="{name:'registro'}">registrado</router-link>.
+            </span>
           </div>
         </form>
       </section>
@@ -53,6 +65,7 @@ import { mapState } from 'vuex';
 import moment from 'moment';
 import VotosService from '@/services/VotosService';
 import RecursosService from '@/services/RecursosService';
+import ComentariosService from '@/services/ComentariosService';
 
 export default {
   name: 'Recurso',
@@ -75,6 +88,7 @@ export default {
       indice: null,
       recurso: {},
       votado: true,
+      comentario: '',
     };
   },
   // La propiedad que le pasamos
@@ -104,6 +118,30 @@ export default {
         RecursosService.put(this.recurso.id, recursoData);
         this.votado = true;
         this.alerta('Voto computado', 'is-success');
+      } catch (error) {
+        this.alerta(error, 'is-danger');
+      }
+    },
+    // Comentar
+    comentar() {
+      const nuevoComentario = {
+        cuando: new Date(),
+        comentario: this.comentario,
+        recursoId: this.id, // (de la propiedad) O this.recurso.id
+        usuarioId: this.usuario.uid,
+        nombre: this.perfil.nombre,
+      };
+      try {
+        // Añadimos el comentario
+        ComentariosService.post(nuevoComentario);
+        // Aumentamos los comentarios
+        const recursoData = {
+          comentarios: this.recurso.comentarios + 1,
+        };
+        // Actualizamos el recurso y sus votos
+        RecursosService.put(this.recurso.id, recursoData);
+        this.alerta('Comentario añadido con éxito', 'is-success');
+        this.comentario = '';
       } catch (error) {
         this.alerta(error, 'is-danger');
       }
