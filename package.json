@@ -5,13 +5,20 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "clean": "rm -rf node_modules && npm run undist",
+    "reinstall": "npm run clean && npm run undist && npm install",
+    "undist": "rm -rf dist",
+    "start": "node server.js"
   },
   "dependencies": {
     "buefy": "^0.8.20",
+    "connect-history-api-fallback": "^1.6.0",
     "core-js": "^3.6.5",
+    "express": "^4.17.1",
     "firebase": "^7.15.5",
     "moment": "^2.27.0",
+    "serve-static": "^1.14.1",
     "vue": "^2.6.11",
     "vue-moment": "^4.1.0",
     "vue-router": "^3.2.0",
