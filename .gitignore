@@ -8,7 +8,7 @@ node_modules
 .env
 
 # firebase config, quitar para desplegar con Heroku Cli
-# /src/services/FirebaseConfig.js
+/src/services/FirebaseConfig.js
 
 # Log files
 npm-debug.log*
