@@ -12,6 +12,7 @@ const store = new Vuex.Store({
     perfil: {},
     recursos: [],
     otrosRecursos: [],
+    comentarios: [],
   },
   // Las unicas que tocan en estado
   mutations: {
@@ -26,6 +27,9 @@ const store = new Vuex.Store({
     },
     establecerOtros(state, val) {
       state.otrosRecursos.unshift(val);
+    },
+    establecerComentarios(state, val) {
+      state.comentarios = val;
     },
     limpiarOtros(state) {
       state.otrosRecursos = [];
@@ -49,6 +53,7 @@ const store = new Vuex.Store({
 
 // No perder la sesión si se recarga la página
 // y aun mantenemos el estado
+// Mantiene la sesión en Tiempo real
 // Esta función de firebase nos da en tiempo real estado del usuario
 // Es decir, nos dice en todo momento si esta identificado y ctivo (por ejemplo sus tokens)
 Service.auth.onAuthStateChanged((user) => {
@@ -58,7 +63,7 @@ Service.auth.onAuthStateChanged((user) => {
     // obtenemos el perfil de usuario, accion
     store.dispatch('obtenerPerfilUsuario');
   }
-  // Obtiene el listado en Tiempo Real
+  // Obtiene el listado en Tiempo Real de recursos
   // Podemos poner un where y filtrar por el usuarioa ctual
   // https://firebase.google.com/docs/firestore/query-data/listen
   Service.recursosColeccion.orderBy('cuando', 'desc').onSnapshot((querySnapshot) => {
@@ -93,6 +98,17 @@ Service.auth.onAuthStateChanged((user) => {
       });
       store.commit('establecerRecursos', recursos);
     }
+  });
+  // Recibimos los comentarios en Tiempo Real
+  // Recibimos comentarios y lo almacenamos en el estado
+  Service.comentariosColeccion.orderBy('cuando', 'desc').onSnapshot((querySnapshot) => {
+    const comentarios = [];
+    querySnapshot.forEach((doc) => {
+      const comentario = doc.data();
+      comentario.id = doc.id;
+      comentarios.push(comentario);
+    });
+    store.commit('establecerComentarios', comentarios);
   });
 });
 

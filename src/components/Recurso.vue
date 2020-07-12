@@ -24,37 +24,44 @@
         <h2 class="subtitle">Comentarios</h2>
         <form @submit.prevent="comentar">
           <b-field>
-            <b-input v-model.trim="comentario"
-              maxlength="250" type="textarea"
-              placeholder="Comentarios" required>
-            </b-input>
+            <b-input v-model.trim="comentario" maxlength="250" type="textarea" placeholder="Comentarios" required></b-input>
           </b-field>
           <div class="control">
-            <b-button
-              v-if="usuario"
-              :disabled="!comentario.length"
-              tag="input" type="is-info"
-              native-type="submit"
-              value="Comentar"
-            >Comentar</b-button>
+            <b-button v-if="usuario" :disabled="!comentario.length" tag="input" type="is-info" native-type="submit" value="Comentar">Comentar</b-button>
             <span v-else>
-              Para comentar debes estar <router-link :to="{name:'registro'}">registrado</router-link>.
+              Para comentar debes estar
+              <router-link :to="{name:'registro'}">registrado</router-link>.
             </span>
           </div>
         </form>
+        <!-- Mostramos los comentarios -->
+        <br />
+        <template v-for="comentario in comentariosLocales">
+          <div :key="comentario.id" class="box">
+            <article class="media">
+              <div class="media-content">
+                <div class="content">
+                  <p>
+                    {{ comentario.comentario }}
+                    <br />
+                    <strong>{{ comentario.nombre }}</strong> |
+                    <small>{{ comentario.cuando | fechaHace }}</small>
+                  </p>
+                </div>
+              </div>
+            </article>
+          </div>
+        </template>
       </section>
       <footer class="modal-card-foot">
         <!-- Si no estamos registrados -->
         <span v-if="!usuario">
-          <router-link :to="{name:'registro'}">Regístrate</router-link> para poder votar.
+          <router-link :to="{name:'registro'}">Regístrate</router-link>para poder votar.
         </span>
         <!-- Si ya hemos votado -->
         <span v-else-if="votado">Voto registrado.</span>
         <!-- Si no votamos -->
-        <b-button v-else
-          type="is-primary"
-          @click="votar"
-        >Votar recurso</b-button>
+        <b-button v-else type="is-primary" @click="votar">Votar recurso</b-button>
       </footer>
     </div>
   </div>
@@ -95,7 +102,11 @@ export default {
   props: ['id'],
   // variables de vuex
   computed: {
-    ...mapState(['usuario', 'recursos', 'perfil']),
+    ...mapState(['usuario', 'recursos', 'perfil', 'comentarios']),
+    // Obtenemos los comentarios de este recurso
+    comentariosLocales() {
+      return this.comentarios.filter((comentario) => comentario.recursoId === this.id);
+    },
   },
   // Métodos
   methods: {
