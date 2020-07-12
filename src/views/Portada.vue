@@ -22,8 +22,12 @@
             </div>
           </transition>
           <!-- Stream de recursos -->
-          <RecursoPreview :key="recurso.id" @visualizarRecurso="visualizarRecurso" @eliminarRecurso="eliminarRecurso"
-            v-for="recurso in recursos" :recurso="recurso"></RecursoPreview>
+          <RecursoPreview :key="recurso.id"
+            @visualizarRecurso="visualizarRecurso"
+            @eliminarRecurso="eliminarRecurso"
+            v-for="recurso in recursos"
+            :recurso="recurso">
+          </RecursoPreview>
           <h1 class="has-text-centered" v-show="!recursos.length">No existen recursos, agrega el primero.</h1>
         </div>
         <!-- Agregar recurso -->
@@ -50,6 +54,26 @@
                 <router-link :to="{ name: 'login' }">autentificarte</router-link>en Vuefilos.
               </p>
             </form>
+          </section>
+          <!-- Top recursos -->
+          <section class="section">
+            <h2>TOP Recursos</h2>
+            <hr />
+            <div v-for="top in topRecursos" :key="top.id" class="box">
+              <article class="media">
+                <div class="media-content">
+                  <div class="content top">
+                    <p>
+                      <a @click="visualizar(true, top.id)">
+                        <strong>{{ top.titulo }}</strong>
+                        <br />
+                        <small>{{ top.votos }} voto/s</small>
+                      </a>
+                    </p>
+                  </div>
+                </div>
+              </article>
+            </div>
           </section>
         </div>
       </div>
@@ -141,7 +165,7 @@ export default {
   // Metodos computados
   computed: {
     // Nos traemos el estado de Vuex
-    ...mapState(['usuario', 'perfil', 'recursos', 'otrosRecursos']),
+    ...mapState(['usuario', 'perfil', 'recursos', 'otrosRecursos', 'topRecursos']),
   },
 };
 </script>

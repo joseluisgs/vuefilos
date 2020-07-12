@@ -13,6 +13,7 @@ const store = new Vuex.Store({
     recursos: [],
     otrosRecursos: [],
     comentarios: [],
+    topRecursos: [],
   },
   // Las unicas que tocan en estado
   mutations: {
@@ -30,6 +31,9 @@ const store = new Vuex.Store({
     },
     establecerComentarios(state, val) {
       state.comentarios = val;
+    },
+    establecerTopRecursos(state, val) {
+      state.topRecursos = val;
     },
     limpiarOtros(state) {
       state.otrosRecursos = [];
@@ -99,7 +103,6 @@ Service.auth.onAuthStateChanged((user) => {
       store.commit('establecerRecursos', recursos);
     }
   });
-  // Recibimos los comentarios en Tiempo Real
   // Recibimos comentarios y lo almacenamos en el estado
   Service.comentariosColeccion.orderBy('cuando', 'desc').onSnapshot((querySnapshot) => {
     const comentarios = [];
@@ -109,6 +112,16 @@ Service.auth.onAuthStateChanged((user) => {
       comentarios.push(comentario);
     });
     store.commit('establecerComentarios', comentarios);
+  });
+  // Top Recursos (por votos) en Tiempo Real
+  Service.recursosColeccion.orderBy('votos', 'desc').limit(5).onSnapshot((querySnapshot) => {
+    const recursos = [];
+    querySnapshot.forEach((doc) => {
+      const recurso = doc.data();
+      recurso.id = doc.id;
+      recursos.push(recurso);
+    });
+    store.commit('establecerTopRecursos', recursos);
   });
 });
 
