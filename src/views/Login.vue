@@ -41,7 +41,7 @@
 
 <script>
 import AuthService from '@/services/AuthService';
-import { mapState, mapActions, mapMutations } from 'vuex';
+import { mapActions, mapMutations } from 'vuex';
 import UsuariosService from '../services/UsuariosService';
 
 export default {
@@ -106,10 +106,6 @@ export default {
         type: 'is-danger',
       });
     },
-  },
-  computed: {
-    // Nos traemos el estado de Vuex
-    ...mapState(['usuario']),
   },
 };
 </script>
