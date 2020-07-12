@@ -41,7 +41,8 @@
 
 <script>
 import AuthService from '@/services/AuthService';
-import { mapActions, mapMutations } from 'vuex';
+import { mapState, mapActions, mapMutations } from 'vuex';
+import UsuariosService from '../services/UsuariosService';
 
 export default {
   name: 'Login',
@@ -74,8 +75,24 @@ export default {
       try {
         const res = await AuthService.loginGoogle();
         // Establecemos el usuario
-        this.establecerUsuario(res.user);
-        // Guardamos su perfil
+        this.establecerUsuario(res);
+        // Comprobamos si existe su perfil
+        const perfil = await UsuariosService.getById(res.uid);
+        // si no existe guardamos su perfil
+        if (!perfil) {
+          // Vamos a ver si tiene dos nombres o los apellidos que tiene, etc...
+          // Esto solo funciona en españo, si no...
+          // var nombre = res.displayName.split(' ').slice(0, -1).join(' ');
+          // var apellidos = res.displayName.split(' ').slice(-1).join(' ');
+          const nombreCompleto = res.displayName.split(' ');
+          const nuevoPerfil = {
+            nombre: (nombreCompleto.lengh === 3) ? nombreCompleto[0] : `${nombreCompleto[0]} ${nombreCompleto[1]}`,
+            apellidos: (nombreCompleto.lengh === 3) ? `${nombreCompleto[1]} ${nombreCompleto[2]}` : `${nombreCompleto[2]} ${nombreCompleto[3]}`,
+            registro: new Date(),
+          };
+          // Insertamos en la base de datos
+          UsuariosService.post(res.uid, nuevoPerfil);
+        }
         this.obtenerPerfilUsuario();
         this.$router.push({ name: 'portada' });
       } catch (error) {
@@ -89,6 +106,10 @@ export default {
         type: 'is-danger',
       });
     },
+  },
+  computed: {
+    // Nos traemos el estado de Vuex
+    ...mapState(['usuario']),
   },
 };
 </script>
