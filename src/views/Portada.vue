@@ -64,7 +64,7 @@
                 <div class="media-content">
                   <div class="content top">
                     <p>
-                      <a @click="visualizar(true, top.id)">
+                      <a @click="visualizarRecurso(true, top.id)">
                         <strong>{{ top.titulo }}</strong>
                         <br />
                         <small>{{ top.votos }} voto/s</small>
